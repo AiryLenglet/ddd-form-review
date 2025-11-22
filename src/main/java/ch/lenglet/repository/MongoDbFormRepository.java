@@ -6,12 +6,16 @@ import com.alibaba.fastjson2.JSON;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
+import java.time.Clock;
+import java.time.Instant;
+
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Sorts.descending;
 
 public class MongoDbFormRepository implements FormRepository{
 
     private MongoDatabase mongoDatabase;
+    private Clock clock;
 
     @Override
     public Form findLatestByCaseId() {
@@ -30,6 +34,7 @@ public class MongoDbFormRepository implements FormRepository{
     public void save(Form form) {
         final var document = Document.parse(JSON.toJSONString(form));
         document.compute("version", (_, version) -> ((int)version)+1);
+        document.put("timestamp", Instant.now(this.clock));
         this.mongoDatabase.getCollection("form")
                 .insertOne(document);
     }
