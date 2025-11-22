@@ -1,5 +1,6 @@
 package ch.lenglet.repository;
 
+import ch.lenglet.auth.AuthenticationConfig;
 import ch.lenglet.core.Form;
 import ch.lenglet.core.FormImpl;
 import com.alibaba.fastjson2.JSON;
@@ -35,6 +36,7 @@ public class MongoDbFormRepository implements FormRepository{
         final var document = Document.parse(JSON.toJSONString(form));
         document.compute("version", (_, version) -> ((int)version)+1);
         document.put("timestamp", Instant.now(this.clock));
+        document.put("by", AuthenticationConfig.PRINCIPAL.get());
         this.mongoDatabase.getCollection("form")
                 .insertOne(document);
     }
