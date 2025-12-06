@@ -9,6 +9,12 @@ repositories {
     mavenCentral()
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+}
+
 dependencies {
     implementation(platform("org.mongodb:mongodb-driver-bom:5.6.1"))
     implementation("org.mongodb:mongodb-driver-sync")
