@@ -14,9 +14,9 @@ public class ReviewAnswerService {
         this.formRepository = formRepository;
     }
 
-    void execute() {
+    void execute(String answerId, Risk risk) {
         final var form = this.formRepository.findLatestByCaseId();
-        form.reviewAnswer(new AnswerId(), Risk.SUFFICIENT);
+        form.reviewAnswer(new AnswerId(answerId), risk);
         this.formRepository.save(form);
     }
 }
