@@ -2,6 +2,7 @@ package ch.lenglet.repository;
 
 import com.mongodb.MongoException;
 import com.mongodb.MongoWriteException;
+import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 
@@ -10,9 +11,12 @@ import static com.mongodb.ErrorCategory.fromErrorCode;
 
 public class MongoDbConfig {
 
+    public MongoClient createClient() {
+        return MongoClients.create("mongodb://root:pass@localhost:27017/?retryWrites=false&replicaSet=rs0");
+    }
+
     @SuppressWarnings("resource")
-    public MongoDatabase createDatabase() {
-        final var client = MongoClients.create("mongodb://root:pass@localhost:27017/");
+    public MongoDatabase createDatabase(MongoClient client) {
         return client.getDatabase("test");
     }
 
