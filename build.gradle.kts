@@ -1,5 +1,6 @@
 plugins {
     id("java")
+    id("io.freefair.aspectj") version "9.1.0"
 }
 
 group = "ch.lenglet"
@@ -18,6 +19,9 @@ java {
 dependencies {
     implementation(platform("org.mongodb:mongodb-driver-bom:5.6.1"))
     implementation("org.mongodb:mongodb-driver-sync")
+
+    implementation("org.aspectj:aspectjrt:1.9.25.1")
+    compileOnly("org.aspectj:aspectjtools:1.9.25.1")
 
     implementation("com.alibaba:fastjson:2.0.28")
 
