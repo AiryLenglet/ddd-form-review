@@ -21,6 +21,8 @@ dependencies {
 
     implementation("com.alibaba:fastjson:2.0.28")
 
+    implementation("org.slf4j:slf4j-simple:1.7.25")
+
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("net.javacrumbs.json-unit:json-unit-assertj:5.1.0")
