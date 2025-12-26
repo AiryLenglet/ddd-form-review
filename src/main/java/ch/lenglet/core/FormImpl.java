@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 import static ch.lenglet.core.Risk.NOT_YET_EVALUATED;
 
-public class FormImpl implements Form {
+class FormImpl implements Form {
 
     private long caseId;
     private int version = 0;

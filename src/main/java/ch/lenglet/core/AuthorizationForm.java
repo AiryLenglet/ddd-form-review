@@ -2,12 +2,16 @@ package ch.lenglet.core;
 
 import java.util.Set;
 
-public class AuthorizationForm implements Form{
+class AuthorizationForm implements Form{
 
     private final Form delegate;
 
-    public AuthorizationForm(Form delegate) {
+    private AuthorizationForm(Form delegate) {
         this.delegate = delegate;
+    }
+
+    public static AuthorizationForm wrap(Form form) {
+        return new AuthorizationForm(form);
     }
 
     @Override
