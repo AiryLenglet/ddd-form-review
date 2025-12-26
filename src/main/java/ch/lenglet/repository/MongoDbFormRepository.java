@@ -1,6 +1,7 @@
 package ch.lenglet.repository;
 
 import ch.lenglet.auth.AuthenticationConfig;
+import ch.lenglet.core.AuthorizationForm;
 import ch.lenglet.core.Form;
 import ch.lenglet.core.FormImpl;
 import com.alibaba.fastjson2.JSON;
@@ -28,7 +29,7 @@ public class MongoDbFormRepository implements FormRepository{
         if(document == null) {
             throw new RuntimeException("No form found for caseId ");
         }
-        return FormImpl.fromJson(document.toJson());
+        return new AuthorizationForm(FormImpl.fromJson(document.toJson()));
     }
 
     @Override

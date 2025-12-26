@@ -1,0 +1,40 @@
+package ch.lenglet.core;
+
+import java.util.Set;
+
+public class AuthorizationForm implements Form{
+
+    private final Form delegate;
+
+    public AuthorizationForm(Form delegate) {
+        this.delegate = delegate;
+    }
+
+    @Override
+    public void reviewAnswer(AnswerId answerId, Risk risk) {
+        if(this.status() != Status.REVIEW) {
+            throw new UnauthorizedOperation("Cannot review answer");
+        }
+        this.delegate.reviewAnswer(answerId, risk);
+    }
+
+    @Override
+    public Risk getWorstRisk() {
+        return this.delegate.getWorstRisk();
+    }
+
+    @Override
+    public Set<FormImpl.Answer> answers() {
+        return this.delegate.answers();
+    }
+
+    @Override
+    public String toJson() {
+        return this.delegate.toJson();
+    }
+
+    @Override
+    public Status status() {
+        return this.delegate.status();
+    }
+}

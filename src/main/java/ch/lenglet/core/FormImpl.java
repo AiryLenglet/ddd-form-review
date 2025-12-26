@@ -13,6 +13,7 @@ public class FormImpl implements Form {
     private long caseId;
     private int version = 0;
     private Set<Answer> answers;
+    private Status status;
 
     private FormImpl() {
     }
@@ -20,15 +21,17 @@ public class FormImpl implements Form {
     private FormImpl(
             long caseId,
             int version,
-            Set<Answer> answers
+            Set<Answer> answers,
+            Status status
     ) {
         this.caseId = caseId;
         this.version = version;
         this.answers = answers;
+        this.status = status;
     }
 
     public static FormImpl of(long caseId, Set<Answer> answers) {
-        return new FormImpl(caseId, 0, Set.copyOf(answers));
+        return new FormImpl(caseId, 0, Set.copyOf(answers), Status.REVIEW);
     }
 
     public static FormImpl fromJson(String jsonString) {
@@ -43,7 +46,8 @@ public class FormImpl implements Form {
                                     answer.getString("questionId"),
                                     answer.getString("answerId"),
                                     answer.getObject("rating", Risk.class));
-                        }).collect(Collectors.toSet()));
+                        }).collect(Collectors.toSet()),
+                Status.valueOf(json.getString("status")));
     }
 
     @Override
@@ -78,8 +82,14 @@ public class FormImpl implements Form {
         return JSONObject.of(
                 "caseId", this.caseId,
                 "version", this.version,
-                "answers", this.answers
+                "answers", this.answers,
+                "status", this.status
         ).toJSONString();
+    }
+
+    @Override
+    public Status status() {
+        return this.status;
     }
 
     public static class Answer {

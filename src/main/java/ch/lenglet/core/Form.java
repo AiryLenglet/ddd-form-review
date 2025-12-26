@@ -11,4 +11,10 @@ public interface Form {
     Set<FormImpl.Answer> answers();
 
     String toJson();
+
+    Status status();
+
+    enum Status {
+        REVIEW
+    }
 }

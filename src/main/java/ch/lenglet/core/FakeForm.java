@@ -21,4 +21,9 @@ public class FakeForm implements Form {
     public String toJson() {
         return "";
     }
+
+    @Override
+    public Status status() {
+        return null;
+    }
 }
