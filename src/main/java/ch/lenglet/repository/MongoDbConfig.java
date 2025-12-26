@@ -11,6 +11,8 @@ import static com.mongodb.ErrorCategory.fromErrorCode;
 
 public class MongoDbConfig {
 
+    public static ScopedValue<MongoClient> MONGO_CLIENT = ScopedValue.newInstance();
+
     public MongoClient createClient() {
         return MongoClients.create("mongodb://root:pass@localhost:27017/?retryWrites=false&replicaSet=rs0");
     }
