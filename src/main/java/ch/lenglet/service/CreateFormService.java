@@ -1,7 +1,8 @@
 package ch.lenglet.service;
 
 import ch.lenglet.core.Form;
-import ch.lenglet.core.FormImpl;
+import ch.lenglet.core.FormFactory;
+import ch.lenglet.core.InternalAnswer;
 import ch.lenglet.repository.FormRepository;
 
 import java.util.Set;
@@ -29,11 +30,11 @@ public class CreateFormService {
 
     private Form create(V1UpstreamFormData upstreamForm) {
         final var answers = upstreamForm.questionAnswers().stream()
-                .map(questionAnswer -> FormImpl.Answer.of(
+                .map(questionAnswer -> InternalAnswer.of(
                         questionAnswer.questionId(),
                         questionAnswer.selectedAnswerId()))
                 .collect(Collectors.toSet());
-        return FormImpl.of(22L, answers);
+        return FormFactory.newForm(22L, answers);
     }
 
     record KycQuestionAnswerDto(

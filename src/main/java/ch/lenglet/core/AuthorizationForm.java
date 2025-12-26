@@ -28,7 +28,7 @@ class AuthorizationForm implements Form{
     }
 
     @Override
-    public Set<FormImpl.Answer> answers() {
+    public Set<Answer> answers() {
         return this.delegate.answers();
     }
 

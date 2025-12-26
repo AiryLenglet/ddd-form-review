@@ -13,7 +13,7 @@ public class FakeForm implements Form {
     }
 
     @Override
-    public Set<FormImpl.Answer> answers() {
+    public Set<Answer> answers() {
         return Set.of();
     }
 

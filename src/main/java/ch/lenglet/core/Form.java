@@ -8,7 +8,7 @@ public interface Form {
 
     Risk getWorstRisk();
 
-    Set<FormImpl.Answer> answers();
+    Set<Answer> answers();
 
     String toJson();
 
