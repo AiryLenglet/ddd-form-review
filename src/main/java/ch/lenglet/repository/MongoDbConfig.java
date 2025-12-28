@@ -2,6 +2,7 @@ package ch.lenglet.repository;
 
 import com.mongodb.MongoException;
 import com.mongodb.MongoWriteException;
+import com.mongodb.client.ClientSession;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
@@ -12,6 +13,11 @@ import static com.mongodb.ErrorCategory.fromErrorCode;
 public class MongoDbConfig {
 
     public static ScopedValue<MongoClient> MONGO_CLIENT = ScopedValue.newInstance();
+    public static ScopedValue<ClientSession> CLIENT_SESSION = ScopedValue.newInstance();
+
+    public static ClientSession getClientSession() {
+        return CLIENT_SESSION.isBound() ? CLIENT_SESSION.get() : null;
+    }
 
     public MongoClient createClient() {
         return MongoClients.create("mongodb://root:pass@localhost:27017/?retryWrites=false&replicaSet=rs0");

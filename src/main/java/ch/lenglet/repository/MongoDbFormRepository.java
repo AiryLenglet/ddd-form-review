@@ -10,6 +10,7 @@ import org.bson.Document;
 import java.time.Clock;
 import java.time.Instant;
 
+import static ch.lenglet.repository.MongoDbConfig.getClientSession;
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Sorts.descending;
 
@@ -20,12 +21,15 @@ public class MongoDbFormRepository implements FormRepository{
 
     @Override
     public Form findLatestByCaseId() {
-        final var document = this.mongoDatabase.getCollection("form")
-                .find(eq("caseId", 123))
-                .sort(descending("version"))
+        final var collection = this.mongoDatabase.getCollection("form");
+        final var filter = eq("caseId", 123);
+        final var clientSession = getClientSession();
+        final var find = clientSession == null ? collection.find(filter) : collection.find(clientSession, filter);
+
+        final var document = find.sort(descending("version"))
                 .limit(1)
                 .first();
-        if(document == null) {
+        if (document == null) {
             throw new RuntimeException("No form found for caseId ");
         }
         return FormFactory.createFromJson(document.toJson());
@@ -34,10 +38,16 @@ public class MongoDbFormRepository implements FormRepository{
     @Override
     public void save(Form form) {
         final var document = Document.parse(JSON.toJSONString(form));
-        document.compute("version", (_, version) -> ((int)version)+1);
+        document.compute("version", (_, version) -> ((int) version) + 1);
         document.put("timestamp", Instant.now(this.clock));
         document.put("by", AuthenticationConfig.PRINCIPAL.get());
-        this.mongoDatabase.getCollection("form")
-                .insertOne(document);
+
+        final var collection = this.mongoDatabase.getCollection("form");
+        final var clientSession = getClientSession();
+        if (clientSession != null) {
+            collection.insertOne(clientSession, document);
+        } else {
+            collection.insertOne(document);
+        }
     }
 }

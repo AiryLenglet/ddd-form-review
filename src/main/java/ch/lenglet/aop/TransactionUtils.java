@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.function.Supplier;
 
+import static ch.lenglet.repository.MongoDbConfig.CLIENT_SESSION;
 import static ch.lenglet.repository.MongoDbConfig.MONGO_CLIENT;
 
 public class TransactionUtils {
@@ -22,7 +23,8 @@ public class TransactionUtils {
             final var options = TransactionOptions.builder()
                             .build();
             session.startTransaction(options);
-            final var result = methodExecution.get();
+            final var result = ScopedValue.where(CLIENT_SESSION, session)
+                    .call(methodExecution::get);
             session.commitTransaction();
             LOGGER.info("Commiting transaction");
             return result;
