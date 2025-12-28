@@ -3,6 +3,8 @@ package ch.lenglet.aop;
 import com.mongodb.TransactionOptions;
 import com.mongodb.client.ClientSession;
 import com.mongodb.client.MongoClient;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,12 +17,16 @@ public class TransactionUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger("Transaction");
 
-    public static Object wrapInTransaction(Supplier<Object> methodExecution) {
+    public static Object wrapInTransaction(Supplier<Object> methodExecution, JoinPoint jp) {
         LOGGER.info("Opening transaction");
+        final var methodSignature = (MethodSignature) jp.getSignature();
+        final var method = methodSignature.getMethod();
+        final var transactionAnnotation = method.getAnnotation(Transaction.class);
         final MongoClient mongoClient = MONGO_CLIENT.get();
         ClientSession session = mongoClient.startSession();
         try (session){
             final var options = TransactionOptions.builder()
+                    .writeConcern(transactionAnnotation.writeConcern().get())
                             .build();
             session.startTransaction(options);
             final var result = ScopedValue.where(CLIENT_SESSION, session)

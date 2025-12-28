@@ -8,4 +8,21 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface Transaction {
+
+    WriteConcern writeConcern() default WriteConcern.MAJORITY;
+
+    enum WriteConcern {
+        MAJORITY (com.mongodb.WriteConcern.MAJORITY)
+        ;
+
+        private final com.mongodb.WriteConcern writeConcern;
+
+        WriteConcern(com.mongodb.WriteConcern writeConcern) {
+            this.writeConcern = writeConcern;
+        }
+
+        public com.mongodb.WriteConcern get() {
+            return writeConcern;
+        }
+    }
 }
