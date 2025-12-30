@@ -26,4 +26,14 @@ public class FakeForm implements Form {
     public Status status() {
         return null;
     }
+
+    @Override
+    public int getVersion() {
+        return 0;
+    }
+
+    @Override
+    public void incrementVersion() {
+
+    }
 }

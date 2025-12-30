@@ -89,4 +89,14 @@ class FormImpl implements Form {
     public Status status() {
         return this.status;
     }
+
+    @Override
+    public int getVersion() {
+        return this.version;
+    }
+
+    @Override
+    public void incrementVersion() {
+        this.version += 1;
+    }
 }

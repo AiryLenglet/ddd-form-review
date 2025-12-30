@@ -41,4 +41,14 @@ class AuthorizationForm implements Form{
     public Status status() {
         return this.delegate.status();
     }
+
+    @Override
+    public int getVersion() {
+        return this.delegate.getVersion();
+    }
+
+    @Override
+    public void incrementVersion() {
+        this.delegate.incrementVersion();
+    }
 }

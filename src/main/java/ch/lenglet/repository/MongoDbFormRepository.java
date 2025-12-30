@@ -37,8 +37,8 @@ public class MongoDbFormRepository implements FormRepository{
 
     @Override
     public void save(Form form) {
+        form.incrementVersion();
         final var document = Document.parse(JSON.toJSONString(form));
-        document.compute("version", (_, version) -> ((int) version) + 1);
         document.put("timestamp", Instant.now(this.clock));
         document.put("by", AuthenticationConfig.PRINCIPAL.get());
 
