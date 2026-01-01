@@ -1,5 +1,6 @@
 package ch.lenglet.core;
 
+import ch.lenglet.aop.StateBasedPermission;
 import com.alibaba.fastjson2.JSONObject;
 
 import java.util.Comparator;
@@ -48,6 +49,7 @@ class FormImpl implements Form {
                 Status.valueOf(json.getString("status")));
     }
 
+    @StateBasedPermission(status = Status.REVIEW)
     @Override
     public void reviewAnswer(AnswerId answerId, Risk risk) {
         this.answers.stream()
@@ -100,6 +102,7 @@ class FormImpl implements Form {
         this.version += 1;
     }
 
+    @StateBasedPermission(status = Status.REVIEW)
     @Override
     public Status submitReview() {
         this.status = switch (this.getWorstRisk()) {
