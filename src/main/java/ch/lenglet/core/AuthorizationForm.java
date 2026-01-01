@@ -43,6 +43,14 @@ class AuthorizationForm implements Form{
     }
 
     @Override
+    public Status submitReview() {
+        if(this.status() != Status.REVIEW) {
+            throw new UnauthorizedOperation("Cannot submit review");
+        }
+        return this.delegate.submitReview();
+    }
+
+    @Override
     public int getVersion() {
         return this.delegate.getVersion();
     }

@@ -99,4 +99,14 @@ class FormImpl implements Form {
     public void incrementVersion() {
         this.version += 1;
     }
+
+    @Override
+    public Status submitReview() {
+        this.status = switch (this.getWorstRisk()) {
+            case NOT_YET_EVALUATED -> throw new IllegalStateException("Cannot submit form with un-reviewed answer");
+            case NOT_APPLICABLE, SUFFICIENT -> Status.APPROVED;
+            case INSUFFICIENT -> Status.SCORING;
+        };
+        return this.status;
+    }
 }

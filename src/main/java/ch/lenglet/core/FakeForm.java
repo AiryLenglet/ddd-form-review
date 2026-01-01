@@ -28,6 +28,11 @@ public class FakeForm implements Form {
     }
 
     @Override
+    public Status submitReview() {
+        return Status.REVIEW;
+    }
+
+    @Override
     public int getVersion() {
         return 0;
     }

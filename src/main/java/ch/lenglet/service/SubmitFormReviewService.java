@@ -14,11 +14,10 @@ public class SubmitFormReviewService {
 
     void execute() {
         final var form = this.formRepository.findLatestByCaseId();
-        final var worstRisk = form.getWorstRisk();
-        final var _ = switch (worstRisk) {
-            case NOT_YET_EVALUATED -> throw new IllegalStateException("Cannot submit form with un-reviewed answer");
-            case NOT_APPLICABLE, SUFFICIENT -> this.nextStep();
-            case INSUFFICIENT -> this.goBack();
+        final var _ = switch (form.submitReview()) {
+            case REVIEW -> null;
+            case APPROVED -> this.nextStep();
+            case SCORING -> this.goBack();
         };
     }
 

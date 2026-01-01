@@ -14,7 +14,11 @@ public interface Form extends Aggregate{
 
     Status status();
 
+    Status submitReview();
+
     enum Status {
-        REVIEW
+        REVIEW,
+        APPROVED,
+        SCORING
     }
 }
